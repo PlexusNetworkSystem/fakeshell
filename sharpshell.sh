@@ -1,34 +1,35 @@
 #!/usr/bin/bash
-echo -e "${yellow}SharpShell By Plexus Network System.${green}
-Temel cs komutlarını destekler.
-${tp}Kütüphane Ekleme, Önişlemci komutları, Sınıflar ve Nesneler, yapı komutları ${red}DESTEKLENMEZ.${tp}
+source $dir/modules/system/shells/func.sharpshell.sh
+echo -e "${yellow}sharpshell By Plexus Network System.${green}
+Temel c - cpp komutlarını destekler.
+${tp}Önişlemci komutları, Sınıflar ve Nesneler, yapı komutları ${red}DESTEKLENMEZ.${tp}
 Özel komutlar.
-└─╼?help  > yardım menüsü
-└─╼?info  > son ana kadar girilen kodları gösterir.
-└─╼?clear > girilen bütün komutları siler.
-└─╼?edit  > girilen komutları düzenlemeye yarar. Kaydet(CTRL + S), Çık(CTRL + X)
-└─╼?run   > komutları çalıştır.
-└─╼?exit  > sharpshell'den çıkış yap.
-└─╼?cls   > ekranı temizler."
+└─╼${cyan}?help   ${tp}> ${blue}yardım menüsü${tp}
+└─╼${cyan}?info   ${tp}> ${blue}son ana kadar girilen kodları gösterir.${tp}
+└─╼${cyan}?clear  ${tp}> ${blue}girilen bütün komutları siler.${tp}
+└─╼${cyan}?edit   ${tp}> ${blue}girilen komutları düzenlemeye yarar. Kaydet(CTRL + S), Çık(CTRL + X)${tp}
+└─╼${cyan}?run    ${tp}> ${blue}komutları çalıştır.${tp}
+└─╼${cyan}?exit   ${tp}> ${blue}sharpshell'den çıkış yap.${tp}
+└─╼${cyan}?cls    ${tp}> ${blue}ekranı temizler.${tp}
+└─╼${cyan}?export ${tp}> ${blue}kodu dışarı aktarır.${tp}
+└─╼${cyan}?inc    ${tp}> ${blue}kütüphane eklemeye yarar.${tp}
+└─╼${cyan}?prm    ${tp}> ${blue}kodun çalıştırılması içi kullanılacak parametreleri beliriler.${tp}"
 
-while read -e -p "$(echo -ne "${green}(${cyan}sharpshell${green})${blue}>>>${yellow}")" sharpshell ; do
-  [[ $sharpshell = "?help" ]] && echo -e "${yellow}SharpShell By Plexus Network System.${green}
-  Temel cs komutlarını destekler.
-  ${tp}Kütüphane Ekleme, Önişlemci komutları, Sınıflar ve Nesneler, yapı komutları ${red}DESTEKLENMEZ.${tp}
-  Özel komutlar.
-  └─╼?help  > yardım menüsü
-  └─╼?info  > son ana kadar girilen kodları gösterir.
-  └─╼?clear > girilen bütün komutları siler.
-  └─╼?edit  > girilen komutları düzenlemeye yarar. Kaydet(CTRL + S), Çık(CTRL + X)
-  └─╼?run   > komutları çalıştır.
-  └─╼?exit  > sharpshell'den çıkış yap.
-  └─╼?cls   > ekranı temizler."
-  [[ $sharpshell = "?exit" ]] && echo -e "${red}exiting..." && break
-  [[ $sharpshell = "?info" ]] && cat /opt/Plexus.Network.Apps/sharpshell.h
-  [[ $sharpshell = "?clear" ]] && echo "" > /opt/Plexus.Network.Apps/sharpshell.h  && echo -e "${green}Memory is cleared."
-  [[ $sharpshell = "?run" ]] && echo -e "${green}Yorumlanıyor...${cyan}" && run_sharpshell
-  [[ $sharpshell = "?edit" ]] && nano /opt/Plexus.Network.Apps/sharpshell.h
-  [[ $sharpshell = "?cls" ]] && clear && banner
-  [[ $sharpshell != "?help" && $sharpshell != "?cls" && $sharpshell != "?edit" && $sharpshell != "?run" && $sharpshell != "?info" && $sharpshell != "?clear" ]] && echo -e "$sharpshell" >> /opt/Plexus.Network.Apps/sharpshell.h
+while read -e -p "$(echo -ne "${green}(${IPurple}sharpshell${green})${blue}>>>${cyan}")" sharpshell ; do
+  [[ -f $dir/music/open-song.mp3 ]] && play $dir/music/shell_sound.mp3 &> /dev/null &
+  [[ $sharpshell = "?help" ]] && control=1 && help_sharpshell
+  [[ $sharpshell = "?exit" ]] && control=1 && echo -e "${red}exiting..." && break
+  [[ $sharpshell =~ "?inc" ]] && control=1 && add_freamwork_sharpshell "${sharpshell#*: *}"
+  [[ $sharpshell =~ "?prm" ]] && control=1 && add_parameters_sharpshell "${sharpshell#*: *}"
+  [[ $sharpshell =~ "#include" ]] && control=1 && add_freamwork_sharpshell "${sharpshell#*include *}"
+  [[ $sharpshell = "?export" ]] && control=1 && echo -e "${green}exporting..." && export_sharpshell
+  [[ $sharpshell = "?info" ]] && control=1 && info_sharpshell
+  [[ $sharpshell =~ "?clear" ]] && control=1 && clear_sharpshell "${sharpshell#*: *}"
+  [[ $sharpshell = "?run" ]] && control=1 && echo -e "${green}Yorumlanıyor...${yellow}" && run_sharpshell
+  [[ $sharpshell =~ "?edit" ]] && control=1 && edit_sharpshell "${sharpshell#*: *}"
+  [[ $sharpshell = "?cls" ]] && control=1 && clear && banner
+  [[ "$control" != "1" ]] && echo -e "$sharpshell" >> /opt/Plexus.Network.Apps/commands.sharpshell.h
+  control=0
 done
-[[ -f /opt/Plexus.Network.Apps/sharpshell.cs ]] && rm /opt/Plexus.Network.Apps/sharpshell.cs
+[[ -f /opt/Plexus.Network.Apps/commands.sharpshell.cpp ]] && rm /opt/Plexus.Network.Apps/commands.sharpshell.cpp
+#Created By @ABRA
